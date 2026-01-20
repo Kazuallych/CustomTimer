@@ -4,6 +4,7 @@ import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.collection.mutableIntListOf
 import com.example.customtimer.databinding.ActivityMainBinding
@@ -21,22 +22,20 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         mediaPlayer = MediaPlayer()
+
+        mediaPlayer = MediaPlayer.create(this,R.raw.music)
+
 
         binding.btStart.setOnClickListener {
             timerStart(binding.edHour.text.toString(),binding.edMin.text.toString(),binding.edSec.text.toString())
         }
     }
-    fun timerStart(hour: String, minute: String, second: String){
+    fun timerStart(hour: String = "0", minute: String = "0", second: String="0"){
         val sum = ((hour.toInt().hours)+(minute.toInt().minutes)+(second.toInt().seconds)).toLong(DurationUnit.MILLISECONDS)
         object : CountDownTimer(sum,1000){
             override fun onFinish() {
-                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC)
-                mediaPlayer.setDataSource(R.layout.activity_main)
-                mediaPlayer.prepare()
                 mediaPlayer.start()
-                binding.tvText.setText("Готово")
             }
 
             override fun onTick(millisUntilFinished: Long) {
