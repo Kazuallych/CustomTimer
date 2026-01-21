@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
         setContentView(binding.root)
         mediaPlayer = MediaPlayer()
 
-        mediaPlayer = MediaPlayer.create(this,R.raw.music)
+        mediaPlayer = MediaPlayer.create(this,R.raw.elec_alarm)
 
 
         binding.btStart.setOnClickListener {
@@ -35,6 +35,7 @@ class MainActivity : ComponentActivity() {
         val sum = ((hour.toInt().hours)+(minute.toInt().minutes)+(second.toInt().seconds)).toLong(DurationUnit.MILLISECONDS)
         object : CountDownTimer(sum,1000){
             override fun onFinish() {
+                mediaPlayer.isLooping = true
                 mediaPlayer.start()
             }
 
