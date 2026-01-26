@@ -12,6 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CustomTimer">
         <activity
+            android:name=".TimeShablon"
+            android:exported="false"
+            android:label="@string/title_activity_time_shablon"
+            android:theme="@style/Theme.CustomTimer" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"

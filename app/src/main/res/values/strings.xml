@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CustomTimer</string>
+    <string name="title_activity_time_shablon">TimeShablon</string>
+    <string name="second_left">Осталось времени: </string>
 </resources>
