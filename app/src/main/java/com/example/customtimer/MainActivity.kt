@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
         val arrayTimer = ArrayList<CountDownTimer>()
         var tempTimers = ArrayList<Item>()
         data.add(Item(10.seconds))
-        //dataTimer.add(Item(10.seconds))
+
         //Запуск последовательности таймеров
         binding.btStart.setOnClickListener {
             positionTimer = 0
@@ -51,8 +51,9 @@ class MainActivity : ComponentActivity() {
             }
         },{position->
             dataTimer.add(data[position])
-            tempTimers = dataTimer
-            Log.d("MyLog","${tempTimers[0].time}")
+
+            tempTimers = dataTimer.map { it.copy() }.toCollection(ArrayList())
+
             val timerAdd = object : CountDownTimer((dataTimer[positionTimer].time.toLong(DurationUnit.MILLISECONDS)),1000){
                 override fun onTick(millisUntilFinished: Long) {
                     adapterTimer.notifyItemChanged(positionTimer,"TEXT_CHANGED")
@@ -63,15 +64,13 @@ class MainActivity : ComponentActivity() {
                     if(positionTimer<=dataTimer.size-1) {
                         arrayTimer[positionTimer].start()
                     }else{
-                        //Нужно сделать перерисовку чтобы после того как закончаться таймеры, то он вернулись в исходное положение
-                        dataTimer = tempTimers
-
+                        //Обновление элементов после завершения таймеров чтобы вернулся изначальный текст
+                        dataTimer.clear()
+                        dataTimer.addAll(tempTimers.map{it.copy()})
                         for(i in 0..dataTimer.size-1){
-                            Log.d("MyLog","${tempTimers[i].time.inWholeSeconds}")
-                            adapterTimer.notifyItemChanged(i)
+                            adapterTimer.notifyItemChanged(i,"TEXT_CHANGED")
                         }
                     }
-
                 }
             }
             arrayTimer.add(timerAdd)

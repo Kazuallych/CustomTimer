@@ -26,7 +26,7 @@ class Adapter(private val launchSound:()->Unit, private val stopSound:()-> Unit,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[holder.bindingAdapterPosition]
-
+        holder.tvSecLeft.setText("Осталось времени: ${item.time.toInt(DurationUnit.SECONDS)}")
         val timer = object : CountDownTimer(data[holder.bindingAdapterPosition].time.toLong(DurationUnit.MILLISECONDS),1000){
             override fun onTick(millisUntilFinished: Long) {
                 holder.tvSecLeft.setText("Осталось времени: ${millisUntilFinished/1000}")
