@@ -20,6 +20,7 @@ class MainActivity : ComponentActivity() {
     lateinit var adapterTimer: AdapterTimer
     lateinit var mediaPlayer: MediaPlayer
     var positionTimer = 0
+    lateinit var tempTimers: ArrayList<Item>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -28,7 +29,7 @@ class MainActivity : ComponentActivity() {
         data = ArrayList()
         dataTimer = ArrayList()
         val arrayTimer = ArrayList<CountDownTimer>()
-
+        tempTimers = ArrayList<Item>()
         data.add(Item(10.seconds))
         //dataTimer.add(Item(10.seconds))
         //Запуск последовательности таймеров
@@ -52,7 +53,8 @@ class MainActivity : ComponentActivity() {
         },{position->
             dataTimer.add(data[position])
 
-
+            tempTimers.addAll(dataTimer)
+            Log.d("MyLog","${tempTimers[0].time}")
 
             val timerAdd = object : CountDownTimer((dataTimer[positionTimer].time.toLong(DurationUnit.MILLISECONDS)),1000){
                 override fun onTick(millisUntilFinished: Long) {
@@ -65,6 +67,12 @@ class MainActivity : ComponentActivity() {
                         arrayTimer[positionTimer].start()
                     }else{
                         //Нужно сделать перерисовку чтобы после того как закончаться таймеры, то он вернулись в исходное положение
+                        dataTimer.addAll(tempTimers)
+
+                        for(i in 0..dataTimer.size-1){
+                            Log.d("MyLog","${tempTimers[i].time.inWholeSeconds}")
+                            adapterTimer.notifyItemChanged(i)
+                        }
                     }
 
                 }
