@@ -39,6 +39,7 @@ class Adapter(private val launchSound:()->Unit, private val stopSound:()-> Unit,
 
         holder.btTstart.setOnClickListener {
             timer.start()
+
         }
         holder.btCancel.setOnClickListener {
             stopSound()

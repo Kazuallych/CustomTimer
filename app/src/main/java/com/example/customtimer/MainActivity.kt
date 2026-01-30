@@ -4,6 +4,7 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.customtimer.databinding.ActivityMainBinding
@@ -28,14 +29,30 @@ class MainActivity : ComponentActivity() {
         data = ArrayList()
         dataTimer = ArrayList()
         val arrayTimer = ArrayList<CountDownTimer>()
-        var tempTimers = ArrayList<Item>()
         data.add(Item(10.seconds))
 
         //Запуск последовательности таймеров
         binding.btStart.setOnClickListener {
-            positionTimer = 0
-            arrayTimer[positionTimer].start()
+            if(dataTimer.isNotEmpty()) {
+                positionTimer = 0
+                arrayTimer[positionTimer].start()
+            }else{
+                Toast.makeText(this,"Последовательность пуста",Toast.LENGTH_SHORT).show()
+            }
         }
+        //Полная очиста последовательности таймеров
+        binding.btClear.setOnClickListener {
+            if(dataTimer.isNotEmpty()){
+                adapterTimer.notifyItemRangeRemoved(0,dataTimer.size)
+                dataTimer.clear()
+                Toast.makeText(this,"Список полностью очищен",Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(this,"Список уже пуст",Toast.LENGTH_SHORT).show()
+            }
+        }
+        //Определение музыки
+        mediaPlayer = MediaPlayer()
+        mediaPlayer = MediaPlayer.create(this,R.raw.elec_alarm)
 
         //Адаптер Динамического списка таймеров
         adapterTimer = AdapterTimer(dataTimer,{})
@@ -52,7 +69,7 @@ class MainActivity : ComponentActivity() {
         },{position->
             dataTimer.add(data[position])
 
-            tempTimers = dataTimer.map { it.copy() }.toCollection(ArrayList())
+            val tempTimers = dataTimer.map { it.copy() }.toCollection(ArrayList())
 
             val timerAdd = object : CountDownTimer((dataTimer[positionTimer].time.toLong(DurationUnit.MILLISECONDS)),1000){
                 override fun onTick(millisUntilFinished: Long) {
@@ -70,6 +87,7 @@ class MainActivity : ComponentActivity() {
                         for(i in 0..dataTimer.size-1){
                             adapterTimer.notifyItemChanged(i,"TEXT_CHANGED")
                         }
+                        tempTimers.clear()
                     }
                 }
             }
@@ -79,8 +97,5 @@ class MainActivity : ComponentActivity() {
         binding.rcView.layoutManager = LinearLayoutManager(this)
         binding.rcView.adapter = adapter
 
-        //Определение музыки
-        mediaPlayer = MediaPlayer()
-        mediaPlayer = MediaPlayer.create(this,R.raw.elec_alarm)
     }
 }
