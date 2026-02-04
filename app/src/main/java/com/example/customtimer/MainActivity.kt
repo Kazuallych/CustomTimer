@@ -22,6 +22,8 @@ class MainActivity : ComponentActivity() {
     lateinit var adapterTimer: AdapterTimer
     lateinit var mediaPlayer: MediaPlayer
     var positionTimer = 0
+    var tempTimers = ArrayList<Item>()
+    lateinit var arrayTimer: ArrayList<CountDownTimer>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,9 +32,9 @@ class MainActivity : ComponentActivity() {
 
         data = ArrayList()
         dataTimer = ArrayList()
-        var tempTimers = ArrayList<Item>()
-        val arrayTimer = ArrayList<CountDownTimer>()
-        var isRunning = false
+        tempTimers = ArrayList()
+        arrayTimer = ArrayList()
+        var isRunning = true
         data.add(Item(10.1.seconds))
 
         //Запуск последовательности таймеров
@@ -64,15 +66,17 @@ class MainActivity : ComponentActivity() {
             for(i in 0..arrayTimer.size-1){
                 arrayTimer[0].cancel()
             }
+            binding.btStop.isEnabled = true
             refreshItems(tempTimers)
             visibleShow()
+
         }
         //Остановка и запуск уже запущенной последовательности таймеров
         binding.btStop.setOnClickListener{
-            val tempTime = dataTimer[positionTimer].time
             if(isRunning){
                 isRunning = false
                 arrayTimer[positionTimer].cancel()
+                createTimer(isRunning)
             }else{
                 arrayTimer[positionTimer].start()
                 isRunning = true
@@ -97,30 +101,38 @@ class MainActivity : ComponentActivity() {
             }
         },{position->
             dataTimer.add(data[position].copy())
-
-            val timerAdd = object : CountDownTimer((dataTimer[positionTimer].time.toLong(DurationUnit.MILLISECONDS)),1000){
-                override fun onTick(millisUntilFinished: Long) {
-                    adapterTimer.notifyItemChanged(positionTimer,"TEXT_CHANGED")
-                    dataTimer[positionTimer].time = millisUntilFinished.milliseconds
-
-                }
-                override fun onFinish() {
-                    positionTimer++
-                    if(positionTimer<=dataTimer.size-1) {
-                        arrayTimer[positionTimer].start()
-                    }else{
-                        //Обновление элементов после завершения таймеров чтобы вернулся изначальный текст
-                        refreshItems(tempTimers)
-                    }
-                }:
-            }
-            arrayTimer.add(timerAdd)
+            createTimer(isRunning)
             adapterTimer.notifyItemInserted(dataTimer.size-1)
         }, data)
         binding.rcView.layoutManager = LinearLayoutManager(this)
         binding.rcView.adapter = adapter
 
     }
+    fun createTimer(isRunning: Boolean){
+        val timerAdd = object : CountDownTimer((dataTimer[positionTimer].time.toLong(DurationUnit.MILLISECONDS)),1000){
+            override fun onTick(millisUntilFinished: Long) {
+                adapterTimer.notifyItemChanged(positionTimer,"TEXT_CHANGED")
+                dataTimer[positionTimer].time = millisUntilFinished.milliseconds
+            }
+            override fun onFinish() {
+                positionTimer++
+                if(positionTimer<=dataTimer.size-1) {
+                    arrayTimer[positionTimer].start()
+                }else{
+                    binding.btStop.isEnabled = false
+                    //Обновление элементов после завершения таймеров чтобы вернулся изначальный текст
+                    //refreshItems(tempTimers)
+                }
+            }
+        }
+        if(isRunning){
+            arrayTimer.add(timerAdd)
+        }else{
+            arrayTimer[positionTimer] = timerAdd
+        }
+
+    }
+
     fun refreshItems(tempTimers: ArrayList<Item>){
         dataTimer.clear()
         dataTimer.addAll(tempTimers.map{it.copy()})
