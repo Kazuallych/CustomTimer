@@ -36,7 +36,9 @@
                     android:id="@+id/btTstart"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_margin="2dp"
                     android:layout_weight="1"
+                    android:backgroundTint="#686767"
                     android:hapticFeedbackEnabled="false"
                     android:text="Запуск" />
 
@@ -44,14 +46,18 @@
                     android:id="@+id/btCancel"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_margin="2dp"
                     android:layout_weight="1"
+                    android:backgroundTint="#686767"
                     android:text="Стоп" />
 
                 <Button
                     android:id="@+id/btAdd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
                     android:layout_weight="1"
+                    android:backgroundTint="#686767"
                     android:text="Добавить" />
             </LinearLayout>
 

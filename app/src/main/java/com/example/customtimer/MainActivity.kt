@@ -6,15 +6,14 @@ import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.customtimer.databinding.ActivityMainBinding
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
 
-
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity(){
     lateinit var binding: ActivityMainBinding
     lateinit var data: ArrayList<Item>
     lateinit var dataTimer: ArrayList<Item>
@@ -80,6 +79,10 @@ class MainActivity : ComponentActivity() {
                 arrayTimer[positionTimer].start()
                 isRunning = true
             }
+        }
+        binding.btCreate.setOnClickListener {
+            val bottomSheet = BottomSheet()
+            bottomSheet.show(supportFragmentManager,"123")
         }
         //Определение музыки
         mediaPlayer = MediaPlayer()
