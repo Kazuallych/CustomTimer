@@ -6,6 +6,7 @@ import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.customtimer.databinding.ActivityMainBinding
@@ -20,6 +21,7 @@ class MainActivity : AppCompatActivity(){
     lateinit var adapter: Adapter
     lateinit var adapterTimer: AdapterTimer
     lateinit var mediaPlayer: MediaPlayer
+    private val dataModel: DataModel by viewModels()
     var positionTimer = 0
     var tempTimers = ArrayList<Item>()
     lateinit var arrayTimer: ArrayList<CountDownTimer>
@@ -35,6 +37,10 @@ class MainActivity : AppCompatActivity(){
         arrayTimer = ArrayList()
         var isRunning = true
         data.add(Item(10.1.seconds))
+        dataModel.item.observe(this,{
+            data.add(it)
+            adapter.notifyItemInserted(data.size-1)
+        })
 
         //Запуск последовательности таймеров
         binding.btStart.setOnClickListener {

@@ -39,7 +39,6 @@ class Adapter(private val launchSound:()->Unit, private val stopSound:()-> Unit,
 
         holder.btTstart.setOnClickListener {
             timer.start()
-
         }
         holder.btCancel.setOnClickListener {
             stopSound()
@@ -49,8 +48,6 @@ class Adapter(private val launchSound:()->Unit, private val stopSound:()-> Unit,
         holder.btAdd.setOnClickListener {
             addItem(holder.bindingAdapterPosition)
         }
-
-        //val sum = ((hour.toInt().hours) + (minute.toInt().minutes) + (second.toInt().seconds)).toLong(DurationUnit.MILLISECONDS)
     }
 
     override fun getItemCount(): Int {
