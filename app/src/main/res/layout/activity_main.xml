@@ -74,8 +74,9 @@
                 android:id="@+id/btFullStop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:backgroundTint="#ABA9A9"
+                android:backgroundTint="#686767"
                 android:text="FULL STOP"
                 android:visibility="gone" />
 
@@ -83,8 +84,9 @@
                 android:id="@+id/btStop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:backgroundTint="#ABA9A9"
+                android:backgroundTint="#686767"
                 android:text="STOP"
                 android:visibility="gone" />
 

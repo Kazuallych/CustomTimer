@@ -37,10 +37,11 @@ class MainActivity : AppCompatActivity(){
         arrayTimer = ArrayList()
         var isRunning = true
         data.add(Item(10.1.seconds))
-        dataModel.item.observe(this,{
+        //Добавление нового элемента в основной список
+        dataModel.item.observe(this) {
             data.add(it)
-            adapter.notifyItemInserted(data.size-1)
-        })
+            adapter.notifyItemInserted(data.size - 1)
+        }
 
         //Запуск последовательности таймеров
         binding.btStart.setOnClickListener {
@@ -67,8 +68,8 @@ class MainActivity : AppCompatActivity(){
         }
         //Полная остановка всех таймеров после их запуска
         binding.btFullStop.setOnClickListener {
-            for(i in 0..arrayTimer.size-1){
-                arrayTimer[0].cancel()
+            for(i in 0..<arrayTimer.size){
+                arrayTimer[i].cancel()
             }
             binding.btStop.isEnabled = true
             //Обновление элементов после завершения таймеров чтобы вернулся изначальный текст
@@ -81,9 +82,11 @@ class MainActivity : AppCompatActivity(){
                 isRunning = false
                 arrayTimer[positionTimer].cancel()
                 createTimer("refresh",dataTimer[positionTimer])
+                binding.btStop.text = "resume"
             }else{
                 arrayTimer[positionTimer].start()
                 isRunning = true
+                binding.btStop.text = "stop"
             }
         }
         binding.btCreate.setOnClickListener {
@@ -142,7 +145,7 @@ class MainActivity : AppCompatActivity(){
     fun refreshItems(tempTimers: ArrayList<Item>){
         dataTimer.clear()
         dataTimer.addAll(tempTimers.map{it.copy()})
-        for(i in 0..dataTimer.size-1){
+        for(i in 0..<dataTimer.size){
             adapterTimer.notifyItemChanged(i,"TEXT_CHANGED")
         }
     }

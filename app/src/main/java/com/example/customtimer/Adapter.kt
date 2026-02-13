@@ -8,32 +8,39 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.DurationUnit
 
 
 class Adapter(private val launchSound:()->Unit, private val stopSound:()-> Unit,private val addItem:(Int)->Unit, var data: ArrayList<Item>):RecyclerView.Adapter<Adapter.ViewHolder>() {
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
-        var tvSecLeft =view.findViewById<TextView>(R.id.tvSecLeft)
-        var btTstart = view.findViewById<Button>(R.id.btTstart)
-        var btCancel = view.findViewById<Button>(R.id.btCancel)
-        var btAdd = view.findViewById<Button>(R.id.btAdd)
+        var tvSecLeft:TextView =view.findViewById(R.id.tvSecLeft)
+        var btTstart:Button = view.findViewById(R.id.btTstart)
+        var btCancel:Button = view.findViewById(R.id.btCancel)
+        var btAdd:Button = view.findViewById(R.id.btAdd)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Adapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.timer_shablon,parent,false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[holder.bindingAdapterPosition]
-        holder.tvSecLeft.setText("Осталось времени: ${item.time.toInt(DurationUnit.SECONDS)}")
+        val time =item.time.toComponents { hours, minutes, seconds, nanoseconds ->
+            "${hours}ч:${minutes}м:${seconds}с"
+        }
+        holder.tvSecLeft.text = time
         val timer = object : CountDownTimer(data[holder.bindingAdapterPosition].time.toLong(DurationUnit.MILLISECONDS),1000){
             override fun onTick(millisUntilFinished: Long) {
-                holder.tvSecLeft.setText("Осталось времени: ${millisUntilFinished/1000}")
+
+                holder.tvSecLeft.text = millisUntilFinished.milliseconds.toComponents { hours, minutes, seconds, nanoseconds ->
+                        "${hours}ч:${minutes}м:${seconds}с"
+                    }
             }
             override fun onFinish() {
                 launchSound()
-                holder.tvSecLeft.setText("Готово")
+                holder.tvSecLeft.text = "Готово"
             }
         }
 
@@ -43,7 +50,9 @@ class Adapter(private val launchSound:()->Unit, private val stopSound:()-> Unit,
         holder.btCancel.setOnClickListener {
             stopSound()
             timer.cancel()
-            holder.tvSecLeft.text = "Осталось времени: "+ item.time
+            holder.tvSecLeft.text = item.time.toComponents { hours, minutes, seconds, nanoseconds ->
+                "${hours}ч:${minutes}м:${seconds}с"
+            }
         }
         holder.btAdd.setOnClickListener {
             addItem(holder.bindingAdapterPosition)
