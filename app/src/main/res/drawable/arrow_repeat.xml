@@ -1,0 +1,36 @@
+<!--
+The MIT License (MIT)
+
+Copyright (c) 2019-2024 The Bootstrap Authors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="16"
+    android:viewportHeight="16">
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M11.534,7h3.932a0.25,0.25 0 0,1 0.192,0.41l-1.966,2.36a0.25,0.25 0 0,1 -0.384,0l-1.966,-2.36a0.25,0.25 0 0,1 0.192,-0.41m-11,2h3.932a0.25,0.25 0 0,0 0.192,-0.41L2.692,6.23a0.25,0.25 0 0,0 -0.384,0L0.342,8.59A0.25,0.25 0 0,0 0.534,9" />
+    <path
+        android:fillColor="@color/black"
+        android:pathData="M8,3c-1.552,0 -2.94,0.707 -3.857,1.818a0.5,0.5 0 1,1 -0.771,-0.636A6.002,6.002 0 0,1 13.917,7H12.9A5,5 0 0,0 8,3M3.1,9a5.002,5.002 0 0,0 8.757,2.182a0.5,0.5 0 1,1 0.771,0.636A6.002,6.002 0 0,1 2.083,9Z" />
+</vector>

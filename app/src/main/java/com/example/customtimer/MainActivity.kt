@@ -45,14 +45,7 @@ class MainActivity : AppCompatActivity(){
 
         //Запуск последовательности таймеров
         binding.btStart.setOnClickListener {
-            isRunning = true
-            if(dataTimer.isNotEmpty()) {
-                visibleGone()
-                positionTimer = 0
-                arrayTimer[positionTimer].start()
-            }else{
-                Toast.makeText(this,"Последовательность пуста",Toast.LENGTH_SHORT).show()
-            }
+            startTimers()
         }
         //Полная очиста последовательности таймеров
         binding.btClear.setOnClickListener {
@@ -68,6 +61,7 @@ class MainActivity : AppCompatActivity(){
         }
         //Полная остановка всех таймеров после их запуска
         binding.btFullStop.setOnClickListener {
+            isRunning = true
             for(i in 0..<arrayTimer.size){
                 arrayTimer[i].cancel()
             }
@@ -131,7 +125,12 @@ class MainActivity : AppCompatActivity(){
                 if(positionTimer<=dataTimer.size-1) {
                     arrayTimer[positionTimer].start()
                 }else{
-                    binding.btStop.isEnabled = false
+                    if(binding.swRepeat.isChecked){
+                        startTimers()
+                    }else{
+                        binding.btStop.isEnabled = false
+
+                    }
                 }
             }
         }
@@ -139,6 +138,15 @@ class MainActivity : AppCompatActivity(){
             arrayTimer.add(timerAdd)
         }else if(code=="refresh"){
             arrayTimer[positionTimer] = timerAdd
+        }
+    }
+    fun startTimers(){
+        if(dataTimer.isNotEmpty()) {
+            visibleGone()
+            positionTimer = 0
+            arrayTimer[positionTimer].start()
+        }else{
+            Toast.makeText(this,"Последовательность пуста",Toast.LENGTH_SHORT).show()
         }
     }
 
