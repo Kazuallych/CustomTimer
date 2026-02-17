@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.ui.unit.dp
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.customtimer.databinding.ActivityMainBinding
 import kotlin.time.Duration.Companion.milliseconds
@@ -36,13 +37,12 @@ class MainActivity : AppCompatActivity(){
         tempTimers = ArrayList()
         arrayTimer = ArrayList()
         var isRunning = true
-        data.add(Item(10.1.seconds))
+        data.add(Item(5.1.seconds))
         //Добавление нового элемента в основной список
         dataModel.item.observe(this) {
             data.add(it)
             adapter.notifyItemInserted(data.size - 1)
         }
-
         //Запуск последовательности таймеров
         binding.btStart.setOnClickListener {
             startTimers()
@@ -87,12 +87,31 @@ class MainActivity : AppCompatActivity(){
             val bottomSheet = BottomSheet()
             bottomSheet.show(supportFragmentManager,"123")
         }
+        binding.btStopMedia.setOnClickListener {
+            if(binding.swRepeat.isChecked) {
+                binding.btStop.isEnabled = true
+                refreshItems(tempTimers)
+                startTimers()
+                mediaPlayer.stop()
+                binding.btStopMedia.visibility = View.GONE
+            }else{
+                binding.btStop.isEnabled = true
+                refreshItems(tempTimers)
+                mediaPlayer.stop()
+                binding.btStopMedia.visibility = View.GONE
+                visibleShow()
+            }
+        }
         //Определение музыки
         mediaPlayer = MediaPlayer()
         mediaPlayer = MediaPlayer.create(this,R.raw.elec_alarm)
 
         //Адаптер Динамического списка таймеров
-        adapterTimer = AdapterTimer(dataTimer,{})
+        adapterTimer = AdapterTimer(dataTimer,{position->
+            dataTimer.removeAt(position)
+            arrayTimer.removeAt(position)
+            adapterTimer.notifyItemRemoved(position)
+        })
         binding.rcViewTimer.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false)
         binding.rcViewTimer.adapter = adapterTimer
 
@@ -125,12 +144,10 @@ class MainActivity : AppCompatActivity(){
                 if(positionTimer<=dataTimer.size-1) {
                     arrayTimer[positionTimer].start()
                 }else{
-                    if(binding.swRepeat.isChecked){
-                        startTimers()
-                    }else{
-                        binding.btStop.isEnabled = false
-
-                    }
+                    mediaPlayer = MediaPlayer.create(this@MainActivity,R.raw.elec_alarm)
+                    mediaPlayer.start()
+                    binding.btStopMedia.visibility = View.VISIBLE
+                    binding.btStop.isEnabled = false
                 }
             }
         }

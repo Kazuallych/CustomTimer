@@ -23,26 +23,40 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <Switch
-                android:id="@+id/swRepeat"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:showText="false" />
+                android:orientation="horizontal">
 
-            <Switch
-                android:id="@+id/switch2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:text="Switch" />
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_weight="0"
+                    app:srcCompat="@drawable/arrow_repeat" />
 
-            <Switch
-                android:id="@+id/switch3"
+                <Switch
+                    android:id="@+id/swRepeat"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:autoText="false"
+                    android:isScrollContainer="false"
+                    android:showText="false" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btStopMedia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:text="Switch" />
+                android:backgroundTint="#DC4646"
+                android:text="Stop"
+                android:visibility="gone" />
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
