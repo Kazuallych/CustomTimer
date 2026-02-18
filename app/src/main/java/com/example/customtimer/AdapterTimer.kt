@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.time.Duration.Companion.milliseconds
 
-class AdapterTimer(var dataTimer: ArrayList<Item>,private val DeleteItem:(Int)->Unit): RecyclerView.Adapter<AdapterTimer.ViewHolder>() {
+class AdapterTimer(var dataTimer: ArrayList<Item>,val deleteItem:(Int)->Unit): RecyclerView.Adapter<AdapterTimer.ViewHolder>() {
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
         val tvTextTimer:TextView = view.findViewById(R.id.tvTextTimer)
@@ -27,7 +27,7 @@ class AdapterTimer(var dataTimer: ArrayList<Item>,private val DeleteItem:(Int)->
         }
         holder.tvTextTimer.text = time
         holder.tvDel.setOnClickListener {
-            DeleteItem(holder.bindingAdapterPosition)
+            deleteItem(holder.bindingAdapterPosition)
         }
     }
 

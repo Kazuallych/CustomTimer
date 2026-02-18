@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.unit.dp
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.customtimer.databinding.ActivityMainBinding
 import kotlin.time.Duration.Companion.milliseconds
@@ -67,6 +66,9 @@ class MainActivity : AppCompatActivity(){
             }
             binding.btStop.isEnabled = true
             //Обновление элементов после завершения таймеров чтобы вернулся изначальный текст
+            for(i in tempTimers){
+                Log.d("MyLog","${i.time}")
+            }
             refreshItems(tempTimers)
             visibleShow()
         }
@@ -91,9 +93,9 @@ class MainActivity : AppCompatActivity(){
             if(binding.swRepeat.isChecked) {
                 binding.btStop.isEnabled = true
                 refreshItems(tempTimers)
-                startTimers()
                 mediaPlayer.stop()
                 binding.btStopMedia.visibility = View.GONE
+                startTimers()
             }else{
                 binding.btStop.isEnabled = true
                 refreshItems(tempTimers)
@@ -107,11 +109,13 @@ class MainActivity : AppCompatActivity(){
         mediaPlayer = MediaPlayer.create(this,R.raw.elec_alarm)
 
         //Адаптер Динамического списка таймеров
-        adapterTimer = AdapterTimer(dataTimer,{position->
+        adapterTimer = AdapterTimer(dataTimer) { position ->
+            tempTimers.removeAt(position)
             dataTimer.removeAt(position)
             arrayTimer.removeAt(position)
             adapterTimer.notifyItemRemoved(position)
-        })
+            adapterTimer.notifyItemRangeChanged(position, dataTimer.size - position)
+        }
         binding.rcViewTimer.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false)
         binding.rcViewTimer.adapter = adapterTimer
 
