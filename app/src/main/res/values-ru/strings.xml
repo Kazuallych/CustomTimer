@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CustomTimer</string>
+    <string name="title_activity_time_shablon">TimeShablon</string>
+    <string name="start_timer">Запуск</string>
+    <string name="clear">Очистить</string>
+    <string name="full_stop">Выключить</string>
+    <string name="stop">Стоп</string>
+    <string name="add">Добавить</string>
+    <string name="resume">Продолжить</string>
+</resources>

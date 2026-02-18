@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:backgroundTint="#DC4646"
-                android:text="Stop"
+                android:text="@string/full_stop"
                 android:visibility="gone" />
 
         </LinearLayout>
@@ -133,7 +133,7 @@
                 android:layout_margin="2dp"
                 android:layout_weight="1"
                 android:backgroundTint="#686767"
-                android:text="FULL STOP"
+                android:text="@string/full_stop"
                 android:visibility="gone" />
 
             <Button
@@ -143,7 +143,7 @@
                 android:layout_margin="2dp"
                 android:layout_weight="1"
                 android:backgroundTint="#686767"
-                android:text="STOP"
+                android:text="@string/stop"
                 android:visibility="gone" />
 
             <Button
@@ -153,7 +153,7 @@
                 android:layout_margin="2dp"
                 android:layout_weight="1"
                 android:backgroundTint="#686767"
-                android:text="Start Timer"
+                android:text="@string/start_timer"
                 android:visibility="visible" />
 
             <Button
@@ -163,20 +163,20 @@
                 android:layout_margin="2dp"
                 android:layout_weight="1"
                 android:backgroundTint="#686767"
-                android:text="Clear"
+                android:text="@string/clear"
                 android:visibility="visible" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/btCreate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="32dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/add"
         android:backgroundTint="#5D6A62"
         android:shadowColor="#FFFFFF"
-        android:text="+"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

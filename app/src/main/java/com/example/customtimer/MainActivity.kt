@@ -3,7 +3,6 @@ package com.example.customtimer
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -49,7 +48,6 @@ class MainActivity : AppCompatActivity(){
         //Полная очиста последовательности таймеров
         binding.btClear.setOnClickListener {
             if(dataTimer.isNotEmpty()){
-                Log.d("MyLog","${data.size}")
                 adapterTimer.notifyItemRangeRemoved(0,dataTimer.size)
                 dataTimer.clear()
                 arrayTimer.clear()
@@ -61,14 +59,7 @@ class MainActivity : AppCompatActivity(){
         //Полная остановка всех таймеров после их запуска
         binding.btFullStop.setOnClickListener {
             isRunning = true
-            for(i in 0..<arrayTimer.size){
-                arrayTimer[i].cancel()
-            }
-            binding.btStop.isEnabled = true
             //Обновление элементов после завершения таймеров чтобы вернулся изначальный текст
-            for(i in tempTimers){
-                Log.d("MyLog","${i.time}")
-            }
             refreshItems(tempTimers)
             visibleShow()
         }
@@ -78,11 +69,11 @@ class MainActivity : AppCompatActivity(){
                 isRunning = false
                 arrayTimer[positionTimer].cancel()
                 createTimer("refresh",dataTimer[positionTimer])
-                binding.btStop.text = "resume"
+                binding.btStop.text = "Продолжить"
             }else{
                 arrayTimer[positionTimer].start()
                 isRunning = true
-                binding.btStop.text = "stop"
+                binding.btStop.text = "Стоп"
             }
         }
         binding.btCreate.setOnClickListener {
@@ -91,13 +82,11 @@ class MainActivity : AppCompatActivity(){
         }
         binding.btStopMedia.setOnClickListener {
             if(binding.swRepeat.isChecked) {
-                binding.btStop.isEnabled = true
                 refreshItems(tempTimers)
                 mediaPlayer.stop()
                 binding.btStopMedia.visibility = View.GONE
                 startTimers()
             }else{
-                binding.btStop.isEnabled = true
                 refreshItems(tempTimers)
                 mediaPlayer.stop()
                 binding.btStopMedia.visibility = View.GONE
@@ -121,6 +110,7 @@ class MainActivity : AppCompatActivity(){
 
         //Адаптер Основного списка таймеров
         adapter = Adapter({
+            mediaPlayer = MediaPlayer.create(this@MainActivity,R.raw.elec_alarm)
             mediaPlayer.start()
         },{
             if(mediaPlayer.isPlaying){
@@ -137,6 +127,7 @@ class MainActivity : AppCompatActivity(){
         binding.rcView.layoutManager = LinearLayoutManager(this)
         binding.rcView.adapter = adapter
     }
+
     fun createTimer(code:String,item: Item){
         val timerAdd = object : CountDownTimer((item.time.toLong(DurationUnit.MILLISECONDS)),1000){
             override fun onTick(millisUntilFinished: Long) {
@@ -161,6 +152,7 @@ class MainActivity : AppCompatActivity(){
             arrayTimer[positionTimer] = timerAdd
         }
     }
+
     fun startTimers(){
         if(dataTimer.isNotEmpty()) {
             visibleGone()
@@ -172,8 +164,16 @@ class MainActivity : AppCompatActivity(){
     }
 
     fun refreshItems(tempTimers: ArrayList<Item>){
+        binding.btStop.isEnabled = true
         dataTimer.clear()
         dataTimer.addAll(tempTimers.map{it.copy()})
+        for(i in arrayTimer){
+            i.cancel()
+        }
+        arrayTimer.clear()
+        for(i in tempTimers){
+            createTimer("create",i)
+        }
         for(i in 0..<dataTimer.size){
             adapterTimer.notifyItemChanged(i,"TEXT_CHANGED")
         }

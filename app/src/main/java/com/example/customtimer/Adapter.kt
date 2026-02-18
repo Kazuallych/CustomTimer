@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Switch
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.time.Duration.Companion.milliseconds
@@ -18,6 +19,7 @@ class Adapter(private val launchSound:()->Unit, private val stopSound:()-> Unit,
         var btTstart:Button = view.findViewById(R.id.btTstart)
         var btCancel:Button = view.findViewById(R.id.btCancel)
         var btAdd:Button = view.findViewById(R.id.btAdd)
+        var swRepeatMain: Switch = view.findViewById(R.id.swRepeatMain)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,7 +35,6 @@ class Adapter(private val launchSound:()->Unit, private val stopSound:()-> Unit,
         holder.tvSecLeft.text = time
         val timer = object : CountDownTimer(data[holder.bindingAdapterPosition].time.toLong(DurationUnit.MILLISECONDS),1000){
             override fun onTick(millisUntilFinished: Long) {
-
                 holder.tvSecLeft.text = millisUntilFinished.milliseconds.toComponents { hours, minutes, seconds, nanoseconds ->
                         "${hours}ч:${minutes}м:${seconds}с"
                     }
@@ -48,11 +49,16 @@ class Adapter(private val launchSound:()->Unit, private val stopSound:()-> Unit,
             timer.start()
         }
         holder.btCancel.setOnClickListener {
-            stopSound()
             timer.cancel()
-            holder.tvSecLeft.text = item.time.toComponents { hours, minutes, seconds, nanoseconds ->
-                "${hours}ч:${minutes}м:${seconds}с"
+            if(holder.swRepeatMain.isChecked){
+                stopSound()
+                timer.start()
+            }else{
+                holder.tvSecLeft.text = item.time.toComponents { hours, minutes, seconds, nanoseconds ->
+                    "${hours}ч:${minutes}м:${seconds}с"
+                }
             }
+
         }
         holder.btAdd.setOnClickListener {
             addItem(holder.bindingAdapterPosition)
