@@ -2,4 +2,4 @@ package com.example.customtimer
 
 import kotlin.time.Duration
 
-data class Item(var time: Duration)
+data class Item(var time: Duration,var checked: Boolean)

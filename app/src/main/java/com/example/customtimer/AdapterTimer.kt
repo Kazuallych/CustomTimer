@@ -1,9 +1,11 @@
 package com.example.customtimer
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Switch
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.time.Duration.Companion.milliseconds
@@ -13,6 +15,7 @@ class AdapterTimer(var dataTimer: ArrayList<Item>,val deleteItem:(Int)->Unit): R
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
         val tvTextTimer:TextView = view.findViewById(R.id.tvTextTimer)
         val tvDel:Button = view.findViewById(R.id.btDel)
+        val swPlaySound: Switch = view.findViewById(R.id.swPlaySound)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -21,6 +24,18 @@ class AdapterTimer(var dataTimer: ArrayList<Item>,val deleteItem:(Int)->Unit): R
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
+        holder.swPlaySound.setOnCheckedChangeListener { _,isChecked ->
+            if(isChecked){
+
+                dataTimer[holder.bindingAdapterPosition].checked = true
+                Log.d("MyLog","${holder.bindingAdapterPosition},${dataTimer[holder.bindingAdapterPosition].checked}")
+            }else{
+                dataTimer[holder.bindingAdapterPosition].checked = false
+                Log.d("MyLog","${holder.bindingAdapterPosition},${dataTimer[holder.bindingAdapterPosition].checked}")
+            }
+        }
+
         val item = dataTimer[holder.bindingAdapterPosition]
         val time =item.time.toComponents { hours, minutes, seconds, nanoseconds ->
             "${hours}ч:${minutes}м:${seconds}с"

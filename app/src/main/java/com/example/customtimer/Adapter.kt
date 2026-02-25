@@ -50,8 +50,8 @@ class Adapter(private val launchSound:()->Unit, private val stopSound:()-> Unit,
         }
         holder.btCancel.setOnClickListener {
             timer.cancel()
+            stopSound()
             if(holder.swRepeatMain.isChecked){
-                stopSound()
                 timer.start()
             }else{
                 holder.tvSecLeft.text = item.time.toComponents { hours, minutes, seconds, nanoseconds ->

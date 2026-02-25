@@ -3,6 +3,7 @@ package com.example.customtimer
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity(){
     private val dataModel: DataModel by viewModels()
     var positionTimer = 0
     var tempTimers = ArrayList<Item>()
+
     lateinit var arrayTimer: ArrayList<CountDownTimer>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +37,7 @@ class MainActivity : AppCompatActivity(){
         tempTimers = ArrayList()
         arrayTimer = ArrayList()
         var isRunning = true
-        data.add(Item(5.1.seconds))
+        data.add(Item(2.1.seconds,false))
         //Добавление нового элемента в основной список
         dataModel.item.observe(this) {
             data.add(it)
@@ -59,6 +61,7 @@ class MainActivity : AppCompatActivity(){
         //Полная остановка всех таймеров после их запуска
         binding.btFullStop.setOnClickListener {
             isRunning = true
+
             //Обновление элементов после завершения таймеров чтобы вернулся изначальный текст
             refreshItems(tempTimers)
             visibleShow()
@@ -81,16 +84,12 @@ class MainActivity : AppCompatActivity(){
             bottomSheet.show(supportFragmentManager,"123")
         }
         binding.btStopMedia.setOnClickListener {
-            if(binding.swRepeat.isChecked) {
-                refreshItems(tempTimers)
-                mediaPlayer.stop()
-                binding.btStopMedia.visibility = View.GONE
-                startTimers()
+            if(positionTimer<dataTimer.size-1){
+                if(dataTimer[positionTimer].checked){
+                    stopSound("checked")
+                }
             }else{
-                refreshItems(tempTimers)
-                mediaPlayer.stop()
-                binding.btStopMedia.visibility = View.GONE
-                visibleShow()
+                stopSound("")
             }
         }
         //Определение музыки
@@ -135,15 +134,17 @@ class MainActivity : AppCompatActivity(){
                 dataTimer[positionTimer].time = millisUntilFinished.milliseconds
             }
             override fun onFinish() {
-                positionTimer++
-                if(positionTimer<=dataTimer.size-1) {
-                    arrayTimer[positionTimer].start()
+                if(dataTimer[positionTimer].checked){
+                    startSound()
                 }else{
-                    mediaPlayer = MediaPlayer.create(this@MainActivity,R.raw.elec_alarm)
-                    mediaPlayer.start()
-                    binding.btStopMedia.visibility = View.VISIBLE
-                    binding.btStop.isEnabled = false
+                    positionTimer++
+                    if(positionTimer<=dataTimer.size-1){
+                        arrayTimer[positionTimer].start()
+                    }else{
+                        startSound()
+                    }
                 }
+
             }
         }
         if(code=="create"){
@@ -151,6 +152,34 @@ class MainActivity : AppCompatActivity(){
         }else if(code=="refresh"){
             arrayTimer[positionTimer] = timerAdd
         }
+    }
+
+    fun stopSound(code: String){
+        if(code=="checked"){
+            Log.d("MyLog",code)
+            mediaPlayer.stop()
+            binding.btStopMedia.visibility = View.GONE
+            positionTimer++
+            arrayTimer[positionTimer].start()
+        }else{
+            Log.d("MyLog",code)
+            mediaPlayer.stop()
+            binding.btStopMedia.visibility = View.GONE
+            if(binding.swRepeat.isChecked){
+                refreshItems(tempTimers)
+                startTimers()
+            }else{
+                refreshItems(tempTimers)
+                visibleShow()
+            }
+        }
+    }
+
+    fun startSound(){
+        mediaPlayer = MediaPlayer.create(this@MainActivity,R.raw.elec_alarm)
+        mediaPlayer.start()
+        binding.btStopMedia.visibility = View.VISIBLE
+        binding.btStop.isEnabled = false
     }
 
     fun startTimers(){

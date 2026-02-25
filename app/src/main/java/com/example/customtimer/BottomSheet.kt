@@ -33,7 +33,7 @@ class BottomSheet : BottomSheetDialogFragment() {
 
             btFragCreate.setOnClickListener {
                 val time = NumberPicHour.value.hours+NumberPicSecond.value.seconds+NumberPicMinutes.value.minutes
-                dataModel.item.value = Item(time)
+                dataModel.item.value = Item(time,false)
                 dismiss()
             }
             btFragCancel.setOnClickListener {

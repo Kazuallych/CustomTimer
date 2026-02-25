@@ -6,7 +6,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
-        android:layout_height="88dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="4dp"
@@ -33,6 +33,14 @@
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
+            <Switch
+                android:id="@+id/swPlaySound"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:text="Switch" />
+
             <Button
                 android:id="@+id/btDel"
                 android:layout_width="match_parent"
@@ -41,6 +49,7 @@
                 android:layout_marginRight="4dp"
                 android:backgroundTint="#E05D5D"
                 android:text="Удалить" />
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
