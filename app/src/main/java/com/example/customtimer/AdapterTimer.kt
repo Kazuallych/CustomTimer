@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.time.Duration.Companion.milliseconds
 
-class AdapterTimer(var dataTimer: ArrayList<Item>,val deleteItem:(Int)->Unit): RecyclerView.Adapter<AdapterTimer.ViewHolder>() {
+class AdapterTimer(var dataTimer: ArrayList<Item>,val deleteItem:(Int)->Unit,val changeSW:(Int, Boolean)->Unit): RecyclerView.Adapter<AdapterTimer.ViewHolder>() {
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
         val tvTextTimer:TextView = view.findViewById(R.id.tvTextTimer)
@@ -29,9 +29,12 @@ class AdapterTimer(var dataTimer: ArrayList<Item>,val deleteItem:(Int)->Unit): R
             if(isChecked){
 
                 dataTimer[holder.bindingAdapterPosition].checked = true
+                changeSW(holder.bindingAdapterPosition,true)
                 Log.d("MyLog","${holder.bindingAdapterPosition},${dataTimer[holder.bindingAdapterPosition].checked}")
             }else{
+
                 dataTimer[holder.bindingAdapterPosition].checked = false
+                changeSW(holder.bindingAdapterPosition,false)
                 Log.d("MyLog","${holder.bindingAdapterPosition},${dataTimer[holder.bindingAdapterPosition].checked}")
             }
         }

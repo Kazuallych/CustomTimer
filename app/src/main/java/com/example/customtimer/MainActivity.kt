@@ -97,13 +97,15 @@ class MainActivity : AppCompatActivity(){
         mediaPlayer = MediaPlayer.create(this,R.raw.elec_alarm)
 
         //Адаптер Динамического списка таймеров
-        adapterTimer = AdapterTimer(dataTimer) { position ->
+        adapterTimer = AdapterTimer(dataTimer, { position ->
             tempTimers.removeAt(position)
             dataTimer.removeAt(position)
             arrayTimer.removeAt(position)
             adapterTimer.notifyItemRemoved(position)
             adapterTimer.notifyItemRangeChanged(position, dataTimer.size - position)
-        }
+        },{position,state->
+            tempTimers[position].checked = state
+        })
         binding.rcViewTimer.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false)
         binding.rcViewTimer.adapter = adapterTimer
 
@@ -122,7 +124,11 @@ class MainActivity : AppCompatActivity(){
             tempTimers = dataTimer.map { it.copy() }.toCollection(ArrayList())
             adapterTimer.notifyItemInserted(dataTimer.size-1)
 
-        }, data)
+        }, {position->
+            data.removeAt(position)
+            adapter.notifyItemRemoved(position)
+            adapter.notifyItemRangeChanged(position,data.size - position)
+        },data)
         binding.rcView.layoutManager = LinearLayoutManager(this)
         binding.rcView.adapter = adapter
     }
@@ -144,7 +150,6 @@ class MainActivity : AppCompatActivity(){
                         startSound()
                     }
                 }
-
             }
         }
         if(code=="create"){
@@ -155,14 +160,13 @@ class MainActivity : AppCompatActivity(){
     }
 
     fun stopSound(code: String){
+        binding.btStop.isEnabled = true
         if(code=="checked"){
-            Log.d("MyLog",code)
             mediaPlayer.stop()
             binding.btStopMedia.visibility = View.GONE
             positionTimer++
             arrayTimer[positionTimer].start()
         }else{
-            Log.d("MyLog",code)
             mediaPlayer.stop()
             binding.btStopMedia.visibility = View.GONE
             if(binding.swRepeat.isChecked){

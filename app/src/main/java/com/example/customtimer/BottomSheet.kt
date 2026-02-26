@@ -19,7 +19,6 @@ class BottomSheet : BottomSheetDialogFragment() {
     private val dataModel:DataModel by activityViewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //val activity = requireActivity()
         binding.apply {
 
             NumberPicHour.minValue = 0

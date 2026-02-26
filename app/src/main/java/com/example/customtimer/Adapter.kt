@@ -13,12 +13,13 @@ import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.DurationUnit
 
 
-class Adapter(private val launchSound:()->Unit, private val stopSound:()-> Unit,private val addItem:(Int)->Unit, var data: ArrayList<Item>):RecyclerView.Adapter<Adapter.ViewHolder>() {
+class Adapter(private val launchSound:()->Unit, private val stopSound:()-> Unit,private val addItem:(Int)->Unit,private val delete:(Int)->Unit ,var data: ArrayList<Item>):RecyclerView.Adapter<Adapter.ViewHolder>() {
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
         var tvSecLeft:TextView =view.findViewById(R.id.tvSecLeft)
         var btTstart:Button = view.findViewById(R.id.btTstart)
         var btCancel:Button = view.findViewById(R.id.btCancel)
         var btAdd:Button = view.findViewById(R.id.btAdd)
+        var btDelete:Button = view.findViewById(R.id.btMainDel)
         var swRepeatMain: Switch = view.findViewById(R.id.swRepeatMain)
     }
 
@@ -47,6 +48,11 @@ class Adapter(private val launchSound:()->Unit, private val stopSound:()-> Unit,
 
         holder.btTstart.setOnClickListener {
             timer.start()
+            holder.btDelete.visibility = View.GONE
+            holder.btCancel.visibility = View.VISIBLE
+        }
+        holder.btDelete.setOnClickListener {
+            delete(holder.bindingAdapterPosition)
         }
         holder.btCancel.setOnClickListener {
             timer.cancel()
@@ -58,7 +64,8 @@ class Adapter(private val launchSound:()->Unit, private val stopSound:()-> Unit,
                     "${hours}ч:${minutes}м:${seconds}с"
                 }
             }
-
+            holder.btDelete.visibility = View.VISIBLE
+            holder.btCancel.visibility = View.GONE
         }
         holder.btAdd.setOnClickListener {
             addItem(holder.bindingAdapterPosition)
